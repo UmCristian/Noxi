@@ -1,0 +1,37 @@
+/* Material 3 roles: tonal surfaces, primary containers and accessible on-colors. */
+:root {
+  color-scheme: light;
+  --bg: #f6f8f5;
+  --surface: #ffffff;
+  --surface-low: #eef2ed;
+  --surface-high: #e5ebe4;
+  --text: #192019;
+  --muted: #536052;
+  --outline: #768373;
+  --border: #ccd5c9;
+  --primary: #3e683e;
+  --on-primary: #ffffff;
+  --container: #c1eabe;
+  --on-container: #153b18;
+  --error: #a3332c;
+  --error-container: #ffdad5;
+  --shadow: 0 8px 32px #15241720;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #111611;
+  --surface: #191f19;
+  --surface-low: #1d251d;
+  --surface-high: #283228;
+  --text: #e1e8dd;
+  --muted: #b4c1af;
+  --outline: #83917e;
+  --border: #3e4b3c;
+  --primary: #a4d49f;
+  --on-primary: #103914;
+  --container: #2c502d;
+  --on-container: #c1eabe;
+  --error: #ffb4a9;
+  --error-container: #5d201c;
+  --shadow: 0 8px 32px #0006;
+}

@@ -1,0 +1,335 @@
+.messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px max(28px, calc((100% - 820px) / 2));
+  scroll-padding: 24px;
+}
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 32px 0 64px;
+  max-width: 540px;
+}
+.empty-symbol {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  background: var(--container);
+  color: var(--on-container);
+  border-radius: 22px;
+  font-size: 2rem;
+  margin-bottom: 28px;
+}
+.empty-state h1 {
+  font-weight: 450;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+.empty-state p {
+  color: var(--muted);
+  max-width: 370px;
+  margin: 0;
+}
+.empty-state .local-note {
+  font-size: 0.6875rem;
+  margin-top: 32px;
+}
+.message {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+.message:last-child {
+  border-bottom: 0;
+}
+.message-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.75rem;
+  margin-bottom: 16px;
+}
+.role-marker {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--surface-high);
+  color: var(--muted);
+  font-weight: 600;
+}
+.assistant .role-marker {
+  background: var(--container);
+  color: var(--on-container);
+}
+.message-body {
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  font-size: 0.9375rem;
+}
+.user .message-body {
+  white-space: pre-wrap;
+}
+.message-body > :first-child {
+  margin-top: 0;
+}
+.message-body > :last-child {
+  margin-bottom: 0;
+}
+.message-body h1,
+.message-body h2,
+.message-body h3 {
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 1.5em 0 0.6em;
+}
+.message-body h1 {
+  font-size: 1.6em;
+}
+.message-body h2 {
+  font-size: 1.35em;
+}
+.message-body h3 {
+  font-size: 1.15em;
+}
+.message-body blockquote {
+  border-left: 3px solid var(--primary);
+  color: var(--muted);
+  padding-left: 20px;
+  margin-left: 0;
+}
+.message-body pre {
+  position: relative;
+  background: var(--surface-low);
+  border-radius: 16px;
+  padding: 48px 20px 20px;
+  overflow: auto;
+  line-height: 1.6;
+}
+.message-body code {
+  font:
+    0.85em/1.6 Consolas,
+    monospace;
+  background: var(--surface-low);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+.message-body pre code {
+  padding: 0;
+}
+.code-copy {
+  position: absolute;
+  right: 8px;
+  top: 6px;
+  font-size: 0.6875rem;
+  color: var(--primary);
+}
+.code-lang {
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  color: var(--muted);
+  font:
+    0.6875rem 'Segoe UI',
+    sans-serif;
+}
+.table-wrap {
+  overflow: auto;
+  margin: 20px 0;
+}
+.message-body table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+.message-body td,
+.message-body th {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  min-width: 80px;
+}
+.message-body th {
+  background: var(--surface-low);
+}
+.message-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 16px;
+}
+.message-footer button {
+  font-size: 0.6875rem;
+  min-height: 36px;
+}
+.message-state,
+.message-usage {
+  font-size: 0.625rem;
+  color: var(--muted);
+  padding: 4px;
+}
+.message-usage {
+  margin-left: auto;
+}
+.citations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.citations a {
+  font-size: 0.6875rem;
+  background: var(--surface-low);
+  border-radius: 8px;
+  padding: 5px 10px;
+  text-decoration: none;
+}
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.attachments:empty {
+  display: none;
+}
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  max-width: 100%;
+  margin-top: 12px;
+}
+.attachment img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.attachment-info {
+  min-width: 0;
+}
+.attachment-name {
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+.attachment-meta,
+.file-icon {
+  font-size: 0.625rem;
+  color: var(--muted);
+}
+.generated-image {
+  flex-wrap: wrap;
+  max-width: 400px;
+}
+.generated-image img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+}
+.composer-area {
+  padding: 16px max(28px, calc((100% - 820px) / 2)) 20px;
+}
+.composer {
+  border-radius: 24px;
+  background: var(--surface-low);
+  border: 1px solid var(--border);
+  padding: 14px 14px 10px;
+}
+.composer:focus-within {
+  border-color: var(--primary);
+}
+#message-input {
+  border: 0;
+  background: transparent;
+  padding: 6px 8px;
+  min-height: 66px;
+  max-height: 180px;
+  resize: none;
+  font-size: 0.9375rem;
+  outline: none;
+}
+.composer-bottom,
+.composer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.composer-bottom {
+  justify-content: space-between;
+}
+#request-status {
+  color: var(--muted);
+  font-size: 0.6875rem;
+}
+.send-button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.stop-button {
+  background: var(--error-container);
+  color: var(--error);
+  white-space: nowrap;
+}
+.composer-footnote {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.625rem;
+  padding: 10px 8px 0;
+}
+.web-indicator {
+  font-size: 0.6875rem;
+  color: var(--primary);
+  margin: 0 8px 10px;
+}
+.pending {
+  padding: 0 8px 10px;
+}
+@media (max-width: 640px) {
+  .messages {
+    padding: 8px 20px;
+  }
+  .empty-state {
+    padding: 24px 0 36px;
+  }
+  .empty-symbol {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 22px;
+  }
+  .composer-area {
+    padding: 10px 12px 12px;
+  }
+  .composer-footnote {
+    font-size: 0.5625rem;
+  }
+  #model-footnote {
+    display: none;
+  }
+  .message-usage {
+    margin-left: 0;
+    width: 100%;
+  }
+  .attachment-name {
+    max-width: 145px;
+  }
+}

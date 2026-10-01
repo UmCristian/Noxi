@@ -1,0 +1,147 @@
+@import url('/tokens.css');
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    0.875rem/1.6 'Segoe UI',
+    system-ui,
+    sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 40px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+header > span,
+.eyebrow {
+  font-size: 0.625rem;
+  letter-spacing: 0.13em;
+  color: var(--muted);
+}
+main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 32px 24px 64px;
+}
+.login-panel {
+  width: min(100%, 440px);
+}
+h1 {
+  font-size: clamp(2.5rem, 7vw, 3.5rem);
+  font-weight: 450;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+  margin: 20px 0;
+}
+.intro {
+  color: var(--muted);
+  margin: 0 0 36px;
+}
+label {
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+input,
+button {
+  font: inherit;
+}
+.password-field {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--outline);
+  border-radius: 14px;
+  background: var(--surface);
+  margin: 8px 0 20px;
+}
+.password-field:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+input {
+  width: 100%;
+  min-width: 0;
+  padding: 16px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--text);
+}
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 24px;
+  font-weight: 600;
+}
+#toggle-password {
+  padding: 12px;
+  margin-right: 4px;
+  background: transparent;
+  color: var(--primary);
+}
+.submit {
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 16px 24px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.submit:hover {
+  background: var(--on-container);
+  color: var(--container);
+}
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+.local-note {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-top: 32px;
+}
+.error {
+  color: var(--error);
+  background: var(--error-container);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+footer {
+  padding: 24px;
+  text-align: center;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+[hidden] {
+  display: none !important;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+  }
+}
+@media (max-width: 500px) {
+  header {
+    padding: 24px;
+  }
+  header > span {
+    display: none;
+  }
+}

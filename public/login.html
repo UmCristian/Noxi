@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="/login.css" />
+    <script src="/login.js" defer></script>
+    <title>Sign in · Noxi</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/login"><img src="/mark.svg" width="36" height="36" alt="" />Noxi</a
+      ><span>YOUR LOCAL WORKSPACE</span>
+    </header>
+    <main>
+      <section class="login-panel" aria-labelledby="login-title">
+        <span class="eyebrow">WELCOME TO NOXI</span>
+        <h1 id="login-title">Space for your<br />next thought.</h1>
+        <p class="intro">Enter your access key to open your workspace.</p>
+        <form method="post" action="/login">
+          <label for="key">Access key</label>
+          <div class="password-field">
+            <input
+              id="key"
+              name="key"
+              type="password"
+              required
+              autofocus
+              autocomplete="current-password"
+              placeholder="Your access key"
+              aria-describedby="login-error"
+            /><button id="toggle-password" type="button" aria-label="Show key" aria-pressed="false">
+              Show
+            </button>
+          </div>
+          <p id="login-error" class="error" role="alert" hidden></p>
+          <button id="login-submit" class="submit" type="submit">
+            Open workspace <span aria-hidden="true">→</span>
+          </button>
+        </form>
+        <p class="local-note">
+          Conversations are saved in this browser.<br />Model requests are sent to OpenAI.
+        </p>
+      </section>
+    </main>
+    <footer>Noxi · An independent client for the OpenAI API</footer>
+  </body>
+</html>

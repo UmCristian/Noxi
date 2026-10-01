@@ -1,0 +1,7 @@
+node_modules
+public/vendor
+package-lock.json
+test-results
+playwright-report
+artifacts
+.vercel

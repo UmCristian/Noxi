@@ -1,0 +1,81 @@
+// Manual catalog shared by the browser and server. Verify capabilities before editing.
+// Optional cost estimates are USD per million tokens, dated 2026-09-12; tools excluded.
+const reasoning = ['none', 'low', 'medium', 'high', 'xhigh'];
+const tools = ['web_search', 'code_interpreter', 'image_generation'];
+export const MODELS = [
+  {
+    id: 'gpt-5.4-mini',
+    featured: true,
+    pricing: { rates: [0.75, 0.075, 4.5] },
+    name: 'GPT-5.4 mini',
+    group: 'Recommended',
+    reasoning,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+  {
+    id: 'gpt-5.4',
+    featured: true,
+    pricing: {
+      rates: [2.5, 0.25, 15],
+      longContext: { threshold: 272000, inputMultiplier: 2, outputMultiplier: 1.5 },
+    },
+    name: 'GPT-5.4',
+    group: 'Recommended',
+    reasoning,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+  {
+    id: 'gpt-5.5',
+    pricing: {
+      rates: [5, 0.5, 30],
+      longContext: { threshold: 272000, inputMultiplier: 2, outputMultiplier: 1.5 },
+    },
+    name: 'GPT-5.5',
+    group: 'More models',
+    reasoning,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+  {
+    id: 'gpt-5.4-nano',
+    pricing: { rates: [0.2, 0.02, 1.25] },
+    name: 'GPT-5.4 nano',
+    group: 'More models',
+    reasoning,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+  {
+    id: 'gpt-4.1',
+    pricing: { rates: [2, 0.5, 8] },
+    name: 'GPT-4.1',
+    group: 'Without reasoning',
+    reasoning: [],
+    tools,
+    vision: true,
+    files: true,
+    verbosity: false,
+    temperature: true,
+    maxOutput: 32768,
+  },
+];
+export const DEFAULT_MODEL = MODELS[0].id;
+export const getModel = (id) => MODELS.find((model) => model.id === id);

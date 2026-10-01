@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="A local-first client for the OpenAI Responses API." />
+    <title>Noxi</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/vendor/markdown-it/markdown-it.min.js" defer></script>
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body hidden>
+    <nav class="topbar" aria-label="Workspace">
+      <a class="brand" href="/" aria-label="Noxi home"
+        ><img src="/mark.svg" width="36" height="36" alt="" /><span>Noxi</span></a
+      >
+      <button id="new-chat" class="nav-item new-chat" title="New conversation">
+        <span class="nav-icon" aria-hidden="true">＋</span><span>New</span>
+      </button>
+      <button id="history-button" class="nav-item" title="Conversation history">
+        <span class="nav-icon" aria-hidden="true">☷</span
+        ><span>History <small id="chat-count">0</small></span>
+      </button>
+      <button id="backup-button" class="nav-item" title="Backups and export">
+        <span class="nav-icon" aria-hidden="true">↧</span><span>Export</span>
+      </button>
+      <div class="nav-spacer"></div>
+      <button id="appearance-button" class="nav-item" popovertarget="appearance-panel">
+        <span class="nav-icon" aria-hidden="true">◐</span><span>Display</span>
+      </button>
+      <form method="post" action="/logout">
+        <button id="logout" class="nav-item" type="submit">
+          <span class="nav-icon" aria-hidden="true">↪</span><span>Sign out</span>
+        </button>
+      </form>
+    </nav>
+    <section id="appearance-panel" popover aria-labelledby="appearance-title">
+      <h2 id="appearance-title">Display</h2>
+      <label for="theme">Theme</label
+      ><select id="theme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+      <label for="text-size"
+        >Text size <output id="text-size-value" for="text-size">100%</output></label
+      >
+      <input id="text-size" type="range" min="80" max="140" step="5" value="100" />
+    </section>
+    <div class="workspace-shell">
+      <header class="workspace-header">
+        <div class="title-group">
+          <span class="eyebrow">WORKSPACE</span
+          ><button id="rename" class="title-button" title="Rename conversation">
+            New conversation
+          </button>
+        </div>
+        <div class="header-actions">
+          <span id="save-state" class="save-state" role="status">Opening…</span
+          ><button
+            id="settings-button"
+            class="tonal"
+            aria-controls="settings"
+            aria-expanded="false"
+          >
+            Settings <span aria-hidden="true">☷</span>
+          </button>
+        </div>
+      </header>
+      <main class="workspace">
+        <section class="conversation" aria-label="Conversation">
+          <div class="conversation-toolbar">
+            <button
+              id="mobile-summary"
+              class="model-chip"
+              aria-label="Configure model and tools"
+            ></button
+            ><span id="usage-total" class="usage-total">0 tokens</span>
+          </div>
+          <div id="notice" class="notice" role="alert" hidden></div>
+          <div id="messages" class="messages" tabindex="0" aria-label="Messages"></div>
+          <div class="composer-area">
+            <div id="web-indicator" class="web-indicator" hidden>
+              Web Search is on · additional charges · confirmation before each request
+            </div>
+            <form id="composer" class="composer">
+              <div id="pending" class="attachments pending"></div>
+              <label class="sr-only" for="message-input">Message</label
+              ><textarea
+                id="message-input"
+                rows="2"
+                placeholder="Write a message…"
+                required
+              ></textarea>
+              <div class="composer-bottom">
+                <div class="composer-actions">
+                  <button
+                    id="attach"
+                    type="button"
+                    class="icon-button"
+                    aria-label="Attach files"
+                    title="Attach files"
+                  >
+                    ＋</button
+                  ><span id="request-status" role="status">Attach or drop files</span>
+                </div>
+                <button
+                  id="send"
+                  class="send-button"
+                  aria-label="Send message"
+                  title="Send message"
+                >
+                  ↑</button
+                ><button id="stop" type="button" class="stop-button" hidden>■ Stop</button>
+              </div>
+            </form>
+            <div class="composer-footnote">
+              <span>Enter to send · Shift + Enter for a new line</span
+              ><span id="model-footnote"></span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+    <aside id="settings" class="settings" aria-labelledby="settings-title" inert>
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">THIS CONVERSATION</span>
+          <h2 id="settings-title">Settings</h2>
+        </div>
+        <button id="close-settings" class="icon-button" aria-label="Close settings">×</button>
+      </div>
+      <section class="settings-section">
+        <label for="model">Model</label
+        ><select id="model"></select>
+        <div class="field-pair">
+          <label>Reasoning<select id="effort" aria-label="Reasoning effort"></select></label
+          ><label
+            >Verbosity<select id="verbosity">
+              <option>low</option>
+              <option selected>medium</option>
+              <option>high</option>
+            </select></label
+          >
+        </div>
+      </section>
+      <section class="settings-section tool-section">
+        <div class="label-row">
+          <h3>Tools</h3>
+          <button id="tools-toggle" class="pill" aria-expanded="false" aria-controls="tools-panel">
+            off
+          </button>
+        </div>
+        <div id="tool-chips" class="tool-chips"></div>
+        <button
+          id="add-tools"
+          class="text-button"
+          aria-controls="tools-panel"
+          aria-expanded="false"
+        >
+          Choose tools
+        </button>
+        <div id="tools-panel" class="tools-panel" hidden>
+          <label class="tool-option"
+            ><span
+              ><strong>Web Search</strong
+              ><small>Search the web for current information.</small></span
+            ><input type="checkbox" role="switch" value="web_search" aria-label="Web Search"
+          /></label>
+          <label class="tool-option"
+            ><span
+              ><strong>Code Interpreter</strong
+              ><small>Run code, analyze data and create files.</small></span
+            ><input
+              type="checkbox"
+              role="switch"
+              value="code_interpreter"
+              aria-label="Code Interpreter"
+          /></label>
+          <label class="tool-option"
+            ><span><strong>Image Generation</strong><small>Create and edit images.</small></span
+            ><input
+              type="checkbox"
+              role="switch"
+              value="image_generation"
+              aria-label="Image Generation"
+          /></label>
+          <p class="cost-note">
+            Tools can incur additional charges. Web Search asks for confirmation before every
+            request; other tools ask when enabled.
+          </p>
+        </div>
+      </section>
+      <section class="settings-section">
+        <label for="developer">Instructions</label
+        ><textarea
+          id="developer"
+          rows="4"
+          spellcheck="false"
+          placeholder="Set the model’s tone, behavior and instructions…"
+        ></textarea>
+        <div class="label-row">
+          <h3>Additional instructions</h3>
+          <button id="add-block" class="text-button">＋ Add</button>
+        </div>
+        <div id="prompt-blocks"></div>
+        <p id="blocks-empty" class="muted">Optional instruction blocks for this conversation.</p>
+      </section>
+      <details class="settings-section advanced">
+        <summary>Advanced settings</summary>
+        <div class="advanced-fields">
+          <label for="format">Response format</label
+          ><select id="format">
+            <option value="text">Text</option>
+            <option value="json_object">JSON</option>
+          </select>
+          <label for="max-tokens">Maximum output tokens</label
+          ><input id="max-tokens" type="number" min="16" max="128000" step="1" />
+          <label for="context">Context strategy</label
+          ><select id="context">
+            <option value="all">Full history</option>
+            <option value="window">Message window</option>
+            <option value="last_turn">Last user turn</option>
+          </select>
+          <label for="window">Messages in window</label
+          ><input id="window" type="number" min="1" max="100" />
+          <label id="temperature-field" hidden
+            >Temperature<input id="temperature" type="number" min="0" max="2" step="0.1"
+          /></label>
+          <button id="cleanup" class="text-button">Clean up remote files</button>
+        </div>
+      </details>
+      <p class="settings-footer">Settings and conversations are saved in this browser.</p>
+    </aside>
+    <dialog id="history-dialog" class="history-dialog" aria-labelledby="history-title">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">SAVED IN THIS BROWSER</span>
+          <h2 id="history-title">Conversations</h2>
+        </div>
+        <button data-close class="icon-button" aria-label="Close history">×</button>
+      </div>
+      <input
+        id="search-chats"
+        type="search"
+        placeholder="Search conversations…"
+        aria-label="Search conversations"
+      />
+      <div id="chat-list" class="chat-list"></div>
+      <div class="history-footer">
+        <button id="import" class="quiet">↥ Import</button
+        ><button id="export-all" class="tonal">↧ Export all</button
+        ><span class="muted">JSON with files</span>
+      </div>
+    </dialog>
+    <dialog id="backup-dialog" aria-labelledby="backup-title">
+      <div class="dialog-heading">
+        <h2 id="backup-title">Backups & export</h2>
+        <button data-close class="icon-button" aria-label="Close export">×</button>
+      </div>
+      <p>
+        JSON backups preserve conversations, settings and local files. Import one to restore a copy
+        or move to another browser.
+      </p>
+      <div class="export-options">
+        <button id="export-current" class="tonal">Conversation backup · JSON</button
+        ><button id="export-md" class="quiet">Markdown</button
+        ><button id="export-docx" class="quiet">Word document</button
+        ><button id="export-txt" class="quiet">Plain text</button>
+      </div>
+      <p class="muted">
+        Clearing this site’s browser data deletes local history. Keep backups somewhere safe.
+      </p>
+    </dialog>
+    <dialog
+      id="confirm-dialog"
+      aria-labelledby="confirm-title"
+      aria-describedby="confirm-description"
+    >
+      <form method="dialog">
+        <div class="dialog-heading"><h2 id="confirm-title"></h2></div>
+        <p id="confirm-description"></p>
+        <label id="confirm-input-label" hidden
+          >Name<input id="confirm-input" maxlength="160"
+        /></label>
+        <div class="dialog-actions">
+          <button value="cancel" class="quiet" autofocus>Cancel</button
+          ><button id="confirm-accept" value="confirm" class="primary">Continue</button>
+        </div>
+      </form>
+    </dialog>
+    <input id="file-input" class="sr-only" type="file" multiple /><input
+      id="import-input"
+      class="sr-only"
+      type="file"
+      multiple
+      accept=".json,.md,.txt"
+    />
+    <div id="drop-hint" class="drop-hint" hidden>Drop files to attach them</div>
+  </body>
+</html>

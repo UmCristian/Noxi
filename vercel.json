@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "framework": null,
+  "fluid": true,
+  "buildCommand": "npm run build",
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 300,
+      "supportsCancellation": true,
+      "includeFiles": "public/**",
+      "excludeFiles": "{tests/**,.env*,test-results/**,playwright-report/**}"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index"
+    }
+  ]
+}
