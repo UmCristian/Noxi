@@ -4,7 +4,7 @@ const reasoning = ['none', 'low', 'medium', 'high', 'xhigh'];
 const reasoningMax = [...reasoning, 'max'];
 const tools = ['web_search', 'code_interpreter', 'image_generation'];
 export const MODELS = [
-    {
+  {
     id: 'gpt-5.6-luna',
     pricing: {
       rates: [0.2, 0.02, 1.2],
