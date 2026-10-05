@@ -4,6 +4,26 @@ const reasoning = ['none', 'low', 'medium', 'high', 'xhigh'];
 const reasoningMax = [...reasoning, 'max'];
 const tools = ['web_search', 'code_interpreter', 'image_generation'];
 export const MODELS = [
+    {
+    id: 'gpt-5.6-luna',
+    pricing: {
+      rates: [0.2, 0.02, 1.2],
+      longContext: {
+        threshold: 272000,
+        inputMultiplier: 2,
+        outputMultiplier: 1.5,
+      },
+    },
+    name: 'GPT-5.6 Luna',
+    group: 'More models',
+    reasoning: reasoningMax,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
   {
     id: 'gpt-6-sol',
     featured: true,
@@ -89,26 +109,6 @@ export const MODELS = [
     maxOutput: 128000,
   },
   {
-    id: 'gpt-5.6-luna',
-    pricing: {
-      rates: [0.2, 0.02, 1.2],
-      longContext: {
-        threshold: 272000,
-        inputMultiplier: 2,
-        outputMultiplier: 1.5,
-      },
-    },
-    name: 'GPT-5.6 Luna',
-    group: 'More models',
-    reasoning: reasoningMax,
-    tools,
-    vision: true,
-    files: true,
-    verbosity: true,
-    temperature: false,
-    maxOutput: 128000,
-  },
-  {
     id: 'gpt-5.4-mini',
     featured: true,
     pricing: { rates: [0.75, 0.075, 4.5] },
@@ -182,5 +182,5 @@ export const MODELS = [
     maxOutput: 32768,
   },
 ];
-export const DEFAULT_MODEL = 'gpt-5.6-luna';
+export const DEFAULT_MODEL = MODELS[0].id;
 export const getModel = (id) => MODELS.find((model) => model.id === id);
