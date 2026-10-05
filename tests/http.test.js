@@ -33,7 +33,7 @@ test('server config is safe, old data is not served, CSP and unknown APIs', asyn
   const response = await fetch(base + '/api/config');
   const config = await response.json();
   assert.equal(config.configured, false);
-  assert.equal(config.models[0].id, 'gpt-5.4-mini');
+  assert.equal(config.models[0].id, 'gpt-5.6-luna');
   assert.equal(config.openAIApiKey, undefined);
   assert.match(response.headers.get('content-security-policy'), /object-src 'none'/);
   assert.equal((await fetch(base + '/data/chats/a.json')).status, 404);
