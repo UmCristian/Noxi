@@ -26,7 +26,7 @@ test('paid web requires fresh explicit request confirmation including auto', () 
 });
 test('model compatibility, default tools off, JSON and context', () => {
   const built = buildResponseRequest(request(), verifyFile);
-  assert.equal(built.model, 'gpt-5.4-mini');
+  assert.equal(built.model, 'gpt-5.6-luna');
   assert.equal(built.store, false);
   assert.equal(built.tools, undefined);
   assert.equal(built.reasoning.effort, 'high');
