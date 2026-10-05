@@ -2,7 +2,8 @@ import { MODELS, getModel } from './model-catalog.js';
 export { MODELS, getModel } from './model-catalog.js';
 export function normalizeSettings(value = {}) {
   if (!value || typeof value !== 'object') value = {};
-  const model = getModel(value.model) || MODELS[0];
+  const model =
+    getModel(value.model === 'gpt-5.4-mini' ? 'gpt-5.4-mini-2026-03-17' : value.model) || MODELS[0];
   return {
     model: model.id,
     reasoningEffort: model.reasoning.includes(value.reasoningEffort)

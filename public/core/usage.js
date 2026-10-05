@@ -1,6 +1,8 @@
 import { getModel } from './model-catalog.js';
 export function estimateCost(message) {
-  const pricing = getModel(message.model)?.pricing;
+  const pricing = getModel(
+    message.model === 'gpt-5.4-mini' ? 'gpt-5.4-mini-2026-03-17' : message.model,
+  )?.pricing;
   const rates = pricing?.rates;
   const usage = message.usage;
   if (!rates || !usage) return null;

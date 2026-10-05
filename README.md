@@ -42,7 +42,7 @@ Without an API key, local organization, settings, backups and Word export still 
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `OPENAI_API_KEY`              | Server-side OpenAI credential, required for model requests and remote files.                                                                                                 |
 | `PASS_KEY`                    | Required shared access key. Also signs the seven-day session cookie. Rotating it invalidates existing sessions.                                                              |
-| `OPENAI_MODEL`                | Initial model for new conversations; defaults to the first entry in the catalog.                                                                                             |
+| `OPENAI_MODEL`                | Initial model for new conversations; defaults to `gpt-5.6-terra`.                                                                                                            |
 | `OPENAI_MODEL_OPTIONS`        | Optional comma-separated catalog IDs shown in the picker. Featured entries and the default model remain available. This is a display filter, not an authorization allowlist. |
 | `OPENAI_DEVELOPER_MESSAGE`    | Fallback instruction when a conversation has no custom instructions.                                                                                                         |
 | `DEFAULT_MAX_OUTPUT_TOKENS`   | Initial output budget, `4096`, clamped to the model limit.                                                                                                                   |
@@ -72,7 +72,18 @@ Use a stable deployment domain for daily work. Browser storage is scoped to the 
 
 [`public/core/model-catalog.js`](public/core/model-catalog.js) is the manual source of truth for model IDs, labels, groups, supported reasoning levels, verbosity, temperature, image/file inputs, tools, output limits and optional cost estimates. The browser builds the picker from it; server request validation and parameter construction use the same catalog.
 
-The included catalog retains gpt-6-sol, gpt-6-luna, gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna, gpt-5.4-mini, gpt-5.4, gpt-5.5, gpt-5.4-nano and gpt-4.1. Availability still depends on your OpenAI account. Noxi never queries `/v1/models` automatically.
+The catalog contains exactly six models, in this order:
+
+| Group        | Model                   | Request ID                |
+| ------------ | ----------------------- | ------------------------- |
+| Recommended  | GPT-5.6 Terra (default) | `gpt-5.6-terra`           |
+| Recommended  | GPT-5.6 Luna            | `gpt-5.6-luna`            |
+| Recommended  | GPT-5.4 mini            | `gpt-5.4-mini-2026-03-17` |
+| Other models | GPT-6 Astra             | `gpt-6-astra`             |
+| Other models | GPT-6 Sol               | `gpt-6-sol`               |
+| Other models | GPT-6 Luna              | `gpt-6-luna`              |
+
+Availability depends on your OpenAI account; Noxi assumes no incentive enrollment or usage tier. Noxi never queries `/v1/models` automatically. All six support image/file inputs, verbosity, the application's three tools and 128000 output tokens. Reasoning efforts are `none, low, medium, high, xhigh, max`, except Astra excludes `none` and mini excludes `max`. Temperature is omitted from requests.
 
 To add a model, copy an entry and verify its capabilities against the official model documentation:
 
@@ -80,7 +91,7 @@ To add a model, copy an entry and verify its capabilities against the official m
 {
   id: 'your-model-id',
   name: 'Display name',
-  group: 'More models',
+  group: 'Other models',
   reasoning: [], // supported effort strings; empty means no reasoning control
   verbosity: false,
   temperature: true,
@@ -91,9 +102,9 @@ To add a model, copy an entry and verify its capabilities against the official m
 }
 ```
 
-The example illustrates the schema, not a real model. The first entry is the default. `featured: true` keeps an entry visible when `OPENAI_MODEL_OPTIONS` filters the picker. Remove an entry to retire a model; saved settings using an unknown ID fall back to the first entry on load. Export important conversations before changing the catalog.
+The example illustrates the schema, not a real model. The first entry is the default. `featured: true` keeps an entry visible when `OPENAI_MODEL_OPTIONS` filters the picker. Remove an entry to retire a model; saved settings using retired or unknown IDs fall back to Terra on load/import. The legacy `gpt-5.4-mini` alias maps to `gpt-5.4-mini-2026-03-17`; incompatible efforts/tools are normalized. Historical messages and their model IDs remain unchanged. Export important conversations before changing the catalog.
 
-Optional `pricing.rates` contains input, cached input and output USD rates per million tokens. Optional `pricing.longContext` declares the threshold and multipliers. Estimates are dated reference values, exclude tool charges and may become outdated; consult OpenAI billing for actual charges. Omit `pricing` to show token counts without a cost estimate.
+Optional `pricing.rates` contains input, cached input and output USD rates per million tokens. Optional `pricing.longContext` declares the threshold and multipliers. Rates verified on October 5, 2026 against [official pricing](https://developers.openai.com/api/docs/pricing) and the [model documentation](https://developers.openai.com/api/docs/models): input/cached input/output USD per million are Terra 2/0.2/12, GPT-5.6 Luna 0.2/0.02/1.2, mini 0.75/0.075/4.5, Astra 10/1/50, GPT-6 Sol 2/0.2/10 and GPT-6 Luna 0.1/0.01/0.5. GPT-5.6 and GPT-6 requests with more than 272000 input tokens multiply input/cache rates by 2 and output rates by 1.5 for the entire request; mini has no such surcharge. Estimates are reference values, exclude tool charges and may become outdated; consult OpenAI billing for actual charges. Omit `pricing` to show token counts without a cost estimate.
 
 `public/core/models.js` normalizes settings and selects context. `all` sends the usable history, `window` sends the last N usable messages, and `last_turn` sends the last user message. Noxi resends the selected context on each request and uses `store: false`; it does not depend on remote conversation state. Streaming uses the [OpenAI Responses streaming API](https://developers.openai.com/api/docs/guides/streaming-responses), translated by the server into a small newline-delimited event protocol.
 

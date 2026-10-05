@@ -5,7 +5,9 @@ function number(value, fallback, min, max) {
   return Number.isFinite(parsed) ? Math.min(max, Math.max(min, parsed)) : fallback;
 }
 export function getRuntimeConfig(env = process.env) {
-  const requested = (env.OPENAI_MODEL_OPTIONS || '').split(',').map((value) => value.trim());
+  const requested = (env.OPENAI_MODEL_OPTIONS || '')
+    .split(',')
+    .map((value) => (value.trim() === 'gpt-5.4-mini' ? 'gpt-5.4-mini-2026-03-17' : value.trim()));
   const defaultSettings = normalizeSettings({
     model: env.OPENAI_MODEL,
     maxOutputTokens: number(env.DEFAULT_MAX_OUTPUT_TOKENS, 4096, 16, 128000),

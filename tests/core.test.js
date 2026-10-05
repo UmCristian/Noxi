@@ -26,20 +26,26 @@ test('paid web requires fresh explicit request confirmation including auto', () 
 });
 test('model compatibility, default tools off, JSON and context', () => {
   const built = buildResponseRequest(request(), verifyFile);
-  assert.equal(built.model, 'gpt-5.6-luna');
+  assert.equal(built.model, 'gpt-5.6-terra');
   assert.equal(built.store, false);
   assert.equal(built.tools, undefined);
   assert.equal(built.reasoning.effort, 'high');
   assert.equal(built.text.verbosity, 'medium');
   assert.equal(built.temperature, undefined);
   const other = buildResponseRequest(
-    request({ model: 'gpt-4.1', maxOutputTokens: 99999 }),
+    request({ model: 'gpt-6-astra', reasoningEffort: 'none', maxOutputTokens: 999999 }),
     verifyFile,
   );
-  assert.equal(other.reasoning, undefined);
-  assert.equal(other.text.verbosity, undefined);
-  assert.equal(other.max_output_tokens, 32768);
-  assert.equal(buildResponseRequest(request({ model: 'gpt-5.4' }), verifyFile).model, 'gpt-5.4');
+  assert.equal(other.reasoning.effort, 'high');
+  assert.equal(other.text.verbosity, 'medium');
+  assert.equal(other.max_output_tokens, 128000);
+  assert.equal(
+    buildResponseRequest(
+      request({ model: 'gpt-5.4-mini-2026-03-17', reasoningEffort: 'max' }),
+      verifyFile,
+    ).reasoning.effort,
+    'high',
+  );
   const json = buildResponseRequest(request({ format: 'json_object' }), verifyFile);
   assert.match(json.instructions, /JSON/);
   assert.equal(
@@ -129,7 +135,7 @@ test('legacy migration strips secrets and restores interrupted state', () => {
       { role: 'assistant', text: 'partial', status: 'streaming' },
     ],
   });
-  assert.equal(chat.settings.model, 'gpt-5.4');
+  assert.equal(chat.settings.model, 'gpt-5.6-terra');
   assert.equal(chat.settings.systemPrompt, 'guide');
   assert.equal(chat.messages[1].status, 'interrupted');
   assert.equal(chat.apiKey, undefined);

@@ -53,7 +53,7 @@ test('known fallback receipts cannot trigger provider operations without an API 
     [
       '/api/responses',
       {
-        settings: { model: 'gpt-5.4-mini' },
+        settings: { model: 'gpt-5.4-mini-2026-03-17' },
         messages: [{ role: 'user', text: 'fixture', attachments: [{ receipt }] }],
       },
     ],
