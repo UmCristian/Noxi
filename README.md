@@ -72,7 +72,7 @@ Use a stable deployment domain for daily work. Browser storage is scoped to the 
 
 [`public/core/model-catalog.js`](public/core/model-catalog.js) is the manual source of truth for model IDs, labels, groups, supported reasoning levels, verbosity, temperature, image/file inputs, tools, output limits and optional cost estimates. The browser builds the picker from it; server request validation and parameter construction use the same catalog.
 
-The included catalog retains GPT-5.4 mini, GPT-5.4, GPT-5.5, GPT-5.4 nano and GPT-4.1. Availability still depends on your OpenAI account. Noxi never queries `/v1/models` automatically.
+The included catalog retains gpt-6-sol, gpt-6-luna, gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna, gpt-5.4-mini, gpt-5.4, gpt-5.5, gpt-5.4-nano and gpt-4.1. Availability still depends on your OpenAI account. Noxi never queries `/v1/models` automatically.
 
 To add a model, copy an entry and verify its capabilities against the official model documentation:
 
