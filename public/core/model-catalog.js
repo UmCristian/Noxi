@@ -1,9 +1,113 @@
 // Manual catalog shared by the browser and server. Verify capabilities before editing.
 // Optional cost estimates are USD per million tokens, dated 2026-09-12; tools excluded.
 const reasoning = ['none', 'low', 'medium', 'high', 'xhigh'];
+const reasoningMax = [...reasoning, 'max'];
 const tools = ['web_search', 'code_interpreter', 'image_generation'];
 export const MODELS = [
   {
+    id: 'gpt-6-sol',
+    featured: true,
+    pricing: {
+      rates: [2, 0.2, 10],
+      longContext: {
+        threshold: 272000,
+        inputMultiplier: 2,
+        outputMultiplier: 1.5,
+      },
+    },
+    name: 'GPT-6 Sol',
+    group: 'Recommended',
+    reasoning: reasoningMax,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+  {
+    id: 'gpt-6-luna',
+    featured: true,
+    pricing: {
+      rates: [0.1, 0.01, 0.5],
+      longContext: {
+        threshold: 272000,
+        inputMultiplier: 2,
+        outputMultiplier: 1.5,
+      },
+    },
+    name: 'GPT-6 Luna',
+    group: 'Recommended',
+    reasoning: reasoningMax,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+  {
+    id: 'gpt-5.6-sol',
+    featured: true,
+    pricing: {
+      rates: [4, 0.4, 20],
+      longContext: {
+        threshold: 272000,
+        inputMultiplier: 2,
+        outputMultiplier: 1.5,
+      },
+    },
+    name: 'GPT-5.6 Sol',
+    group: 'Recommended',
+    reasoning: reasoningMax,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+
+  {
+    id: 'gpt-5.6-terra',
+    pricing: {
+      rates: [2, 0.2, 12],
+      longContext: {
+        threshold: 272000,
+        inputMultiplier: 2,
+        outputMultiplier: 1.5,
+      },
+    },
+    name: 'GPT-5.6 Terra',
+    group: 'More models',
+    reasoning: reasoningMax,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
+  {
+    id: 'gpt-5.6-luna',
+    pricing: {
+      rates: [0.2, 0.02, 1.2],
+      longContext: {
+        threshold: 272000,
+        inputMultiplier: 2,
+        outputMultiplier: 1.5,
+      },
+    },
+    name: 'GPT-5.6 Luna',
+    group: 'More models',
+    reasoning: reasoningMax,
+    tools,
+    vision: true,
+    files: true,
+    verbosity: true,
+    temperature: false,
+    maxOutput: 128000,
+  },
     id: 'gpt-5.4-mini',
     featured: true,
     pricing: { rates: [0.75, 0.075, 4.5] },
