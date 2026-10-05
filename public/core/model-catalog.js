@@ -182,5 +182,5 @@ export const MODELS = [
     maxOutput: 32768,
   },
 ];
-export const DEFAULT_MODEL = MODELS[0].id;
+export const DEFAULT_MODEL = 'gpt-5.6-luna';
 export const getModel = (id) => MODELS.find((model) => model.id === id);
