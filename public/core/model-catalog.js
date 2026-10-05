@@ -108,6 +108,7 @@ export const MODELS = [
     temperature: false,
     maxOutput: 128000,
   },
+  {
     id: 'gpt-5.4-mini',
     featured: true,
     pricing: { rates: [0.75, 0.075, 4.5] },
